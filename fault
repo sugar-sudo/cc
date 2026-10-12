@@ -1,0 +1,25 @@
+# 1. Create a clone of the primary VM as a backup VM
+
+# 2. On both VMs
+sudo apt update
+sudo apt install rsync openssh-server -y
+
+# 3. On Backup VM
+sudo systemctl enable --now ssh
+
+# 4. On Backup VM
+hostname -I
+whoami
+
+# 5. On Primary VM
+mkdir -p ~/source
+nano ~/source/temp.txt
+
+# 6. On Backup VM
+mkdir -p ~/backup
+
+# 7. On Primary VM
+rsync -av ~/source/ username@BACKUP_IP:~/backup/
+
+# 8. On Backup VM
+cat ~/backup/temp.txt
