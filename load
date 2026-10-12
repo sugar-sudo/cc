@@ -1,0 +1,31 @@
+Vm1 and vm2:
+sudo apt update
+sudo apt install apache2 -y
+sudo systemctl enable --now apache2
+hostname -I
+
+Vm1:
+sudo apt update
+sudo apt install haproxy -y
+sudo nano /etc/haproxy/haproxy.cfg
+
+#In configuration add#
+frontend http_front
+    bind *:80
+    default_backend http_back
+
+backend http_back
+    balance roundrobin
+    server vm1 VM1_IP:80 check
+    server vm2 VM2_IP:80 check
+
+
+#Replace VM1_IP and VM2_IP with the respective IP addresses.
+(To find Vm_Ip:hostname -I)
+
+sudo systemctl restart haproxy
+sudo systemctl enable haproxy
+sudo systemctl status haproxy
+hostname -I
+
+http://LOAD_BALANCER_IP (hostname -I )
